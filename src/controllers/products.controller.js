@@ -1,88 +1,36 @@
-import productModel from "../dao/models/product.model.js";
+import { ProductService } from "../repositories/index.js";
 
 export const getProducts = async (req, res) => {
-  try {
-    const limit = req.query?.limit || 10;
-    const page = req.query?.page || 1;
-    const category = req.query?.category;
-    const sortQuery = req.query?.sort;
-    const sortOrder = req.query?.sortorder || "desc";
-    const stock = req.query?.stock;
+    let {limit, page, query, sort} = req.query
+    const products = await ProductService.getProducts(limit, page, sort, query)
+    req.io.emit('updatedProducts', products.payload);
+    res.send(products)
+}
 
-    // Query dinámico. Puede filtrar por categoría, por stock o por ambas.
-    // Si no se pasa ninguno de los dos, busca todos los productos {}
-    const query = {
-      ...(category ? { categories: category } : null),
-      ...(stock ? { stock: { $gt: 0 } } : null),
-    };
-
-    const sort = {};
-    if (sortQuery) {
-      sort[sortQuery] = sortOrder;
-    }
-
-    const options = {
-      limit,
-      page,
-      sort,
-      lean: true,
-    };
-
-    const products = await productModel.paginate(query, options);
-
-    res.json({ status: "success", payload: products });
-  } catch (error) {
-    console.log(error);
-    res.json({ result: "error", error });
-  }
-};
-
-export const getProduct = async (req, res) => {
-  try {
-    const pid = req.params.pid;
-    const product = await productModel.findOne({ _id: pid }).lean().exec();
-    res.json({ status: "success", payload: product });
-  } catch (error) {
-    console.log(error);
-    res.json({ status: "error", error });
-  }
-};
+export const getProductById = async (req, res) => {
+    const id = req.params.pid
+    const product = await ProductService.getProductById(id)
+    res.send(product)
+}
 
 export const addProduct = async (req, res) => {
-  try {
-    // const newProduct = await productModel.create(req.body)
-    const newProduct = req.body;
-    const generatedProduct = new productModel(newProduct);
-    await generatedProduct.save();
+    const {title, description, price, thumbnails, code, stock, category, status} = req.body
+    const addProduct = await ProductService.addProduct(title, description, price, code, stock, category, status, thumbnails)
+    req.io.emit('updatedProducts', await ProductService.getProducts());
+    res.send(addProduct)
+}
 
-    res.json({ status: "success", payload: newProduct });
-  } catch (error) {
-    console.log(error);
-    res.json({ status: "error", error });
-  }
-};
-
-export const updateProduct = async (req, res) => {
-  try {
-    const pid = req.params.pid;
-    const productToUpdate = req.body;
-    const result = await productModel.updateOne({ _id: pid }, productToUpdate);
-
-    res.json({ status: "success", payload: result });
-  } catch (error) {
-    console.log(error);
-    res.json({ status: "error", error });
-  }
-};
+export const updateProductById = async (req, res) => {
+    const id = req.params.pid
+    const product = req.body
+    const updateProduct = await ProductService.updateProductById(id, product)
+    req.io.emit('updatedProducts', await ProductService.getProducts());
+    res.send(updateProduct)
+}
 
 export const deleteProduct = async (req, res) => {
-  try {
-    const pid = req.params.pid;
-    const result = await productModel.deleteOne({ _id: pid });
-
-    res.json({ status: "success", payload: result });
-  } catch (error) {
-    console.log(error);
-    res.json({ status: "error", error });
-  }
-};
+    const id = req.params.pid
+    const deleteProduct =  await ProductService.deleteProductById(id)
+    req.io.emit('updatedProducts', await ProductService.getProducts());
+    res.send(deleteProduct)
+}

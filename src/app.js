@@ -1,87 +1,91 @@
-import express from "express";
-import http from "http";
-import productsRouter from "./routes/products.router.js";
-import viewsRouter from "./routes/views.router.js";
-import cartsRouter from "./routes/carts.router.js";
-import chatRouter from "./routes/chat.router.js";
-import handlebars from "express-handlebars";
-import __dirname from "./utils.js";
-import { Server } from "socket.io";
-import mongoose from "mongoose";
-import messageModel from "./dao/models/message.model.js";
-import sessionsRouter from "./routes/sessions.router.js";
-import cookieParser from "cookie-parser";
-import passport from "passport";
-import initializePassport from "./config/passport.config.js";
-import { passportCall, authorization } from "./utils.js";
-import session from "express-session";
-import config from "./config/config.js";
+import express from 'express';
+import handlebars from 'express-handlebars';
+import { Server } from 'socket.io';
 
-const { SESSION_SECRET, COOKIE_SECRET, MONGO_URI, DB_NAME } = config;
+import mongoose from 'mongoose';
+
+import passport from 'passport';
+import cookieParser from 'cookie-parser';
+import initializePassport from './config/passport.config.js'
+
+import __dirname from './utils.js';
+
+import productsRouter from './routes/products.router.js';
+import cartsRouter from './routes/carts.router.js';
+import chatRouter from './routes/chat.router.js';
+import sessionRouter from './routes/session.router.js';
+import viewsRouter from './routes/views.router.js';
+
+import { MessageService } from './repositories/index.js';
+
+import config from './config/config.js';
 
 const app = express();
-const server = http.createServer(app);
-const io = new Server(server);
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser(COOKIE_SECRET));
-initializePassport();
-app.use(passport.initialize());
-app.use(
-  session({ secret: SESSION_SECRET, resave: false, saveUninitialized: true })
-);
-app.use(passport.session());
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(express.static(__dirname + '/public/'))
 
-// Configurando el motor de plantillas
-app.engine("handlebars", handlebars.engine());
-app.set("views", __dirname + "/views");
-app.set("view engine", "handlebars");
-app.use(express.static(__dirname + "/public"));
+app.engine('handlebars', handlebars.engine())
+app.set('views', __dirname + '/views');
+app.set('view engine', 'handlebars')
 
-// Autorización
-// function requireAuth(req, res, next) {
-//     if(req.session?.user) {
-//         return next()
-//     } else {
-//         return res.status(401).json({status: 'error', payload: 'not authenticated'})
-//     }
-// }
+app.use(express.static(__dirname+'/public'))
+app.use(cookieParser('mySecret'));
 
-// Configuración de rutas
-app.use(
-  "/api/products",
-  passportCall("current"),
-  authorization("user"),
-  productsRouter
-);
-app.use("/api/carts", cartsRouter);
-app.use("/api/sessions", sessionsRouter);
-app.use("/chat", chatRouter);
-app.use("/", viewsRouter);
+mongoose.set({strictQuery: true})
+mongoose.connect(config.MONGO_URI,{dbName: config.MONGO_DB_NAME}, async (error)=>{
+    if (!error){
+        console.log(`DB connected to ${config.MONGO_DB_NAME}`);
+        const httpServer = app.listen(config.PORT, ()=>{
+            console.log(`Server listening on port ${config.PORT}...`);
+        });
+        
+        const socketServer = new Server(httpServer)
+        let messages = []
 
-// Conectando mongoose con Atlas e iniciando el servidor
-mongoose.set("strictQuery", false);
-mongoose.connect(MONGO_URI, { dbName: DB_NAME }, (error) => {
-  if (error) {
-    console.log("Can't connect to the DB");
-    return;
-  }
+        socketServer.on('connection', socket =>{
+            console.log(socket.id);
+            socket.on('msg_front', data => console.log(data)); 
+            socket.emit('msg_back',"Conectado al servicio, Bienvenido desde el Back")
+            
 
-  console.log("DB connected");
-  server.listen(8080, () => console.log("Listening on port 8080"));
-  server.on("error", (e) => console.log(e));
-});
+            socket.on('session', async data =>{
+                messages = await MessageService.get();
+                socketServer.emit('first',messages)
+            })
 
-io.on("connection", (socket) => {
-  console.log("New websocket connection");
+            socket.on('message', async data=>{
+                await MessageService.create(data)
+                messages = await MessageService.get();
+                socketServer.emit('logs',messages)
+                })
+        })
 
-  socket.on("chatMessage", async (obj) => {
-    io.emit("message", obj);
-    const newMessage = await messageModel.create({
-      user: obj.user,
-      message: obj.msg,
-    });
-    console.log({ status: "success", payload: newMessage });
-  });
-});
+
+        //Inicializamos passport
+        initializePassport();
+        app.use(passport.initialize());
+
+
+        //Utilizamos este Middleware genérico para enviar la instancia del servidor de Socket.io a las routes
+        app.use((req,res,next)=>{
+            req.io = socketServer
+            next()
+        })
+        app.use('/api/products', productsRouter)
+        app.use('/api/carts', cartsRouter)
+        app.use('/api/chat', chatRouter)
+        app.use('/session', sessionRouter)
+        app.use('/views', viewsRouter)
+        
+        app.get('/', (req, res) =>{
+                res.redirect('views/products')
+            }
+        )
+
+    } else {
+        console.log("Can't connect to database");
+    }
+} )
+

@@ -1,10 +1,9 @@
-import express from "express";
+import {Router} from 'express'
+import { get } from '../controllers/chat.controller.js';
+import { passportCall, authorization} from "../passport_custom.js";
 
-const router = express.Router();
+const router = Router()
 
-router.get("/", (req, res) => {
-  const user = req.session.user;
-  res.render("chat", { user });
-});
+router.get('/', passportCall('current', {session:false, failureRedirect:'/views/login'}),authorization(['USER']), get)
 
 export default router;

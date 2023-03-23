@@ -1,19 +1,20 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
+import { Command } from "commander";
+
+const program = new Command()
+
+program
+    .option('-d <dao>', 'DAO Mode', 'MONGO')
+
+program.parse()
 
 dotenv.config();
 
 export default {
-  PRIVATE_KEY: process.env.PRIVATE_KEY,
-  COOKIE_NAME: process.env.COOKIE_NAME,
-  COOKIE_SECRET: process.env.COOKIE_SECRET,
-  ADMIN_EMAIL: process.env.ADMIN_EMAIL,
-  ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
-  ADMIN_ID: process.env.ADMIN_ID,
-  SESSION_SECRET: process.env.SESSION_SECRET,
-  MONGO_URI: process.env.MONGO_URI,
-  DB_NAME: process.env.DB_NAME,
-  GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
-  GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
-  GITHUB_CALLBACK_URL: process.env.GITHUB_CALLBACK_URL
- 
-};
+    DAO_MODE: program.opts().d,
+    MONGO_URI: process.env.MONGO_URI,
+    MONGO_DB_NAME: process.env.MONGO_DB_NAME,
+    PORT: process.env.PORT,
+    PRIVATE_KEY: process.env.PRIVATE_KEY,
+    COOKIE_NAME: process.env.COOKIE_NAME
+}

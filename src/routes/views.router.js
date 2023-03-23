@@ -1,72 +1,29 @@
-import { Router } from "express";
-import passport from "passport";
-import {
-  redirect,
-  getProducts,
-  renderForm,
-  deleteProduct,
-  getProduct,
-  addProduct,
-  filterByCategory,
-  getCartProducts,
-  addToCart,
-  renderRegister,
-  renderLogin,
-  register,
-  login,
-  logout,
-  getUser,
-  githubLogin,
-} from "../controllers/views.controller.js";
+import {Router} from 'express'
+import passport from "passport"
+import { cartDetail, failLoginView, failRegisterView, getProductByIdView, getProductsView, homeView, loginView, realtimeProductsView, registerView } from '../controllers/views.controller.js';
+import { passportCall, authorization} from "../passport_custom.js";
 
-import { viewsPassportCall, viewsAuthorization } from "../utils.js";
 
-const router = Router();
+const router = Router()
 
-router.get("/", redirect);
-router.get(
-  "/products",
-  viewsPassportCall("current"),
-  viewsAuthorization("user"),
-  getProducts
-);
-router.get(
-  "/products/create",
-  viewsPassportCall("current"),
-  viewsAuthorization("admin"),
-  renderForm
-);
-router.get("/products/delete/:pid", deleteProduct);
-router.get(
-  "/products/:pid",
-  viewsPassportCall("current"),
-  viewsAuthorization("user"),
-  getProduct
-);
-router.post("/products", addProduct);
-router.post("/products/category", filterByCategory);
-router.get(
-  "/carts/:cid",
-  viewsPassportCall("current"),
-  viewsAuthorization("user"),
-  getCartProducts
-);
-router.post("/carts/:cid/products/:pid", addToCart);
-router.get("/sessions/register", renderRegister);
-router.get("/sessions/login", renderLogin);
-router.post("/sessions/register", viewsPassportCall("register"), register);
-router.post("/sessions/login", viewsPassportCall("login"), login);
-router.get("/sessions/logout", logout);
-router.get(
-  "/sessions/user",
-  viewsPassportCall("current"),
-  viewsAuthorization("user"),
-  getUser
-);
-router.get(
-  "/api/sessions/githubcallback",
-  passport.authenticate("github", { failureRedirect: "/login" }),
-  githubLogin
-);
+
+
+router.get('/products', passportCall('current', {session:false, failureRedirect:'/views/login'}),authorization(['PUBLIC']), getProductsView)
+
+router.get('/products/:pid',  passportCall('current', {session:false, failureRedirect:'/views/login'}),authorization(['PUBLIC']), getProductByIdView)
+
+router.get('/home',  passportCall('current', {session:false, failureRedirect:'/views/login'}),authorization(['PUBLIC']), homeView)
+
+router.get('/realtimeproducts',  passportCall('current', {session:false, failureRedirect:'/views/login'}),authorization(['PUBLIC']), realtimeProductsView)
+
+router.get('/carts/:cid',  passportCall('current', {session:false, failureRedirect:'/views/login'}),authorization(['USER', 'ADMIN']),  cartDetail)
+
+router.get('/login', loginView)
+
+router.get('/register', registerView)
+
+router.get('/failregister', failRegisterView)
+
+router.get('/faillogin', failLoginView)
 
 export default router;

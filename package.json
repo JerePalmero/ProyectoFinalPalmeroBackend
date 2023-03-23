@@ -1,21 +1,21 @@
 {
-  "name": "tp_07",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "3-preentrega-backend",
+  "description": "3-preentrega-backend",
+  "main": "app.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/app.js",
-    "watch": "npx tailwindcss -i ./src/views/layouts/index.css -o ./src/public/css/styles.css --watch"
+    "start": "nodemon src/app.js"
   },
-  "keywords": [],
-  "author": "Jeremias Palmero",
+    "author": "Jeremias Palmero",
   "license": "ISC",
+  
+  
   "dependencies": {
     "bcrypt": "^5.1.0",
+    "commander": "^10.0.0",
     "connect-mongo": "^4.6.0",
     "cookie-parser": "^1.4.6",
-    "daisyui": "^2.49.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-handlebars": "^6.0.6",
@@ -23,14 +23,11 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.8.4",
     "mongoose-paginate-v2": "^1.7.1",
+    "nodemon": "^2.0.20",
     "passport": "^0.6.0",
     "passport-github2": "^0.1.12",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "socket.io": "^4.5.4"
-  },
-  "description": "",
-  "devDependencies": {
-    "tailwindcss": "^3.2.4"
   }
 }

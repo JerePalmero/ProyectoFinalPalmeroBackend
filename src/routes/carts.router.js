@@ -1,22 +1,27 @@
-import { Router } from "express";
-import {
-  createCart,
-  getProducts,
-  addProduct,
-  updateCart,
-  updateQuantity,
-  emptyCart,
-  deleteProduct,
-} from "../controllers/carts.controller.js";
+import {Router} from 'express'
+import { addCart, addProductById, cleanCart, deleteProductFromCart, getCartById, getCarts, replaceCart, replaceProductQuantity, purchaseCart } from '../controllers/carts.controller.js';
+import { passportCall, authorization } from '../passport_custom.js';
 
-const router = Router();
 
-router.post("/", createCart);
-router.get("/:cid", getProducts);
-router.post("/:cid/products/:pid", addProduct);
-router.put("/:cid", updateCart);
-router.put("/:cid/products/:pid", updateQuantity);
-router.delete("/:cid", emptyCart);
-router.delete("/:cid/products/:pid", deleteProduct);
+const router = Router()
+
+
+router.post('/', addCart)
+
+router.get('/:cid', getCartById)
+
+router.get('/', getCarts)
+
+router.post('/:cid/products/:pid', passportCall('current', {session:false, failureRedirect:'/views/login'}),authorization(['USER','ADMIN']), addProductById)
+
+router.post('/:cid/purchase', passportCall('current', {session:false, failureRedirect:'/views/login'}),authorization(['USER','ADMIN']), purchaseCart)
+
+router.delete('/:cid', cleanCart)
+
+router.delete('/:cid/products/:pid', deleteProductFromCart)
+
+router.put('/:cid', replaceCart)
+
+router.put('/:cid/products/:pid', replaceProductQuantity)
 
 export default router;
