@@ -38,6 +38,3 @@ boton.addEventListener('click', () =>{
 })
 
 
-/* socket.on('msg_individual', console.log)
-socket.on('msg_resto', console.log)
-socket.on('msg_all', console.log) */

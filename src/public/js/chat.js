@@ -8,21 +8,7 @@ let getUser = fetch('http://127.0.0.1:8080/session/current'). //OBTENEMOS EL USE
                     document.getElementById('username').innerHTML = user
                     socket.emit('session',user)
                 })
-/* let token = document.cookie.split('; ')[1].slice(5) */ //TAMBIEN PODRIAMOS OBTENER EL TOKEN DE LA COOKIE DE ESTA AMNERA Y CONVERTIRLO MEDIANTE libreria https://github.com/auth0/jwt-decode
 
-/* Swal.fire({
-    title:'Authentication',
-    input: 'text',
-    text: 'Set your e-mail',
-    inputValidator: value=>{
-        return !value.trim() && 'Please. Write an e-mail!'
-    },
-    allowOutsideClick: false
-}).then(result=>{
-    user = result.value
-    document.getElementById('username').innerHTML = user
-    socket.emit('session',user)
-}) */
 
 //enviamos mensajes
 chatbox.addEventListener('keyup',event=>{
