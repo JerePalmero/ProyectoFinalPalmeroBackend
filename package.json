@@ -7,11 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon src/app.js"
   },
-    "author": "Jeremias Palmero",
+  "author": "Jeremias Palmero",
   "license": "ISC",
-  
-  
   "dependencies": {
+    "@faker-js/faker": "^7.6.0",
     "bcrypt": "^5.1.0",
     "commander": "^10.0.0",
     "connect-mongo": "^4.6.0",

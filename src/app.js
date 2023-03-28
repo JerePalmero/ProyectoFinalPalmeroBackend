@@ -19,6 +19,7 @@ import viewsRouter from './routes/views.router.js';
 import { MessageService } from './repositories/index.js';
 
 import config from './config/config.js';
+import errorHandler from './middlewares/errors.js'
 
 const app = express();
 
@@ -78,7 +79,7 @@ mongoose.connect(config.MONGO_URI,{dbName: config.MONGO_DB_NAME}, async (error)=
         app.use('/api/chat', chatRouter)
         app.use('/session', sessionRouter)
         app.use('/views', viewsRouter)
-        
+        app.use(errorHandler)
         app.get('/', (req, res) =>{
                 res.redirect('views/products')
             }
