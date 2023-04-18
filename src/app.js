@@ -20,7 +20,7 @@ import { MessageService } from './repositories/index.js';
 
 import config from './config/config.js';
 import errorHandler from './middlewares/errors.js';
-import { addLogger } from './logger_utils.js';
+import { addLogger } from '../logger_utils.js';
 
 const app = express();
 
