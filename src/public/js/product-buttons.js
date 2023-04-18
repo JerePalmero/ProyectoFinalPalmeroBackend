@@ -6,9 +6,10 @@ botones.forEach(boton => {
         await fetch(`/api/carts/${cartId}/products/${boton.id}`, {
             method: 'POST',
         }).then(result => {
-            console.log(result)
+            if(result.status == 410) return alert("No puedes agregar productos de tu autoría a tu carrito")
             if(result.status == 401) window.location.replace("/views/login")
-            else document.location.reload()})
+            else alert("Producto Agregado"), document.location.reload()})
+            .catch(error => console.log(error))
     })
 })
 

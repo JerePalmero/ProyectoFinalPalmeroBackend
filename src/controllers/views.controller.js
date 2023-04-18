@@ -62,3 +62,6 @@ export const failRegisterView = async (req, res) => {
 export const failLoginView = async (req, res) => {
     res.render('session-views/login',{error:'Error al loguearse'})
 }
+export const reminderView = async (req, res) => {
+    res.render('session-views/reminder')
+}

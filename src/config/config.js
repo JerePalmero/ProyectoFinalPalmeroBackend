@@ -17,5 +17,7 @@ export default {
     PORT: process.env.PORT,
     PRIVATE_KEY: process.env.PRIVATE_KEY,
     COOKIE_NAME: process.env.COOKIE_NAME,
-    ENVIRONMENT: process.env.ENVIRONMENT
+    ENVIRONMENT: process.env.ENVIRONMENT,
+    mailUser: process.env.MAIL_USER,
+    mailPass: process.env.MAIL_PASS
 }

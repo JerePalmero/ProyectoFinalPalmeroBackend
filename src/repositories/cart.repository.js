@@ -37,7 +37,7 @@ class CartRepository{
         
     }
     
-    addProductById = async (cartId,productId,quantity) => {
+    addProductById = async (cartId,productId,quantity, ownerId) => {
         if(cartId.length < 24 || productId.length < 24){
             CustomError.createError({
                 name: `ID must have 24 characters at least `,
@@ -47,11 +47,26 @@ class CartRepository{
             })}
         const cart = await this.getCartById(cartId) 
         const product = cart.products?.find(product => product.product._id == productId)
+        const productContent = await ProductService.getProductById(productId) 
         let newCart;
-        if (!product) cart.products?.push({product: productId, quantity: quantity}), newCart = await this.dao.update(cartId, productId, quantity, false);
-        else product.quantity += quantity, newCart = await this.dao.update(cartId, productId, product.quantity, true); 
+        if (!product) {
+            if (productContent.owner  == ownerId) {
+                return {error:'No puedes agregar productos creados por ti mismo'}
+            }
+            cart.products?.push({product: productId, quantity: quantity})
+            newCart = await this.dao.update(cartId, productId, quantity, false);
+            return {newCart, cart}
+        }
+        else {
+            if (productContent.owner  == ownerId) {
+                return {error:'No puedes agregar productos creados por ti mismo'}
+            }
+            product.quantity += quantity
+            newCart = await this.dao.update(cartId, productId, product.quantity, true);
+            return {newCart, cart}
+        }
 
-        return {newCart, cart}
+        
         
     }
 

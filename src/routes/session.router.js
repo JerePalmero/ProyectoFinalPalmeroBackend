@@ -1,6 +1,9 @@
 import {Router} from 'express'
 import passport from 'passport';
-import { current, empty, githubcallback, login, logout, register } from '../controllers/session.controller.js';
+
+import { current, empty, githubcallback, goPremium, login, logout, recoverPass, recoverPassAction, register, reminder } from '../controllers/session.controller.js';
+import { authorization, passportCall } from '../passport_custom.js';
+
 
 const router = Router()
 
@@ -15,5 +18,13 @@ router.get('/githubcallback', passport.authenticate('github', {session:false, fa
 router.get('/logout', logout)
 
 router.get('/current',  passport.authenticate('current', {session:false}), current)
+
+router.post('/reminder', reminder)
+
+router.get('/recoverPass/:token', recoverPass)
+
+router.post('/recoverPassAction/:token', recoverPassAction)
+
+router.get('/premium/:uid', passportCall('current', {session:false, failureRedirect:'/views/login'}),authorization(['ADMIN']), goPremium)
 
 export default router;

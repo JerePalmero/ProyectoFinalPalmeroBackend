@@ -11,11 +11,11 @@ router.get('/products/:pid', getProductById)
 
 router.get('/mockingproducts', mockingProducts)
 
-router.post('/', passportCall('current', {session:false, failureRedirect:'/views/login'}),authorization(['ADMIN']), addProduct)
+router.post('/', passportCall('current', {session:false, failureRedirect:'/views/login'}),authorization(['ADMIN','PREMIUM']), addProduct)
 
-router.put('/:pid', passportCall('current', {session:false, failureRedirect:'/views/login'}),authorization(['ADMIN']), updateProductById)
+router.put('/:pid', passportCall('current', {session:false, failureRedirect:'/views/login'}),authorization(['ADMIN','PREMIUM']), updateProductById)
 
-router.delete('/:pid', passportCall('current', {session:false, failureRedirect:'/views/login'}),authorization(['ADMIN']), deleteProduct)
+router.delete('/:pid', passportCall('current', {session:false, failureRedirect:'/views/login'}),authorization(['ADMIN','PREMIUM']), deleteProduct)
 
 export default router;
 

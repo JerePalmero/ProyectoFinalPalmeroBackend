@@ -4,6 +4,6 @@ import { passportCall, authorization} from "../passport_custom.js";
 
 const router = Router()
 
-router.get('/', passportCall('current', {session:false, failureRedirect:'/views/login'}),authorization(['USER']), get)
+router.get('/', passportCall('current', {session:false, failureRedirect:'/views/login'}),authorization(['USER','PREMIUM']), get)
 
 export default router;

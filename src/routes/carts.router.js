@@ -12,9 +12,9 @@ router.get('/:cid', getCartById)
 
 router.get('/', getCarts)
 
-router.post('/:cid/products/:pid', passportCall('current', {session:false, failureRedirect:'/views/login'}),authorization(['USER','ADMIN']), addProductById)
+router.post('/:cid/products/:pid', passportCall('current', {session:false, failureRedirect:'/views/login'}),authorization(['USER','ADMIN','PREMIUM']), addProductById)
 
-router.post('/:cid/purchase', passportCall('current', {session:false, failureRedirect:'/views/login'}),authorization(['USER','ADMIN']), purchaseCart)
+router.post('/:cid/purchase', passportCall('current', {session:false, failureRedirect:'/views/login'}),authorization(['USER','ADMIN','PREMIUM']), purchaseCart)
 
 router.delete('/:cid', cleanCart)
 
