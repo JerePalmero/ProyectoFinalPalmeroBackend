@@ -1,5 +1,5 @@
 import config from '../config/config.js';
-import { createHash, isValidPassword } from '../encrypt.js'
+import { createHash, isValidPassword } from '../encrypt.js';
 import { UserService } from "../repositories/index.js";
 
 export const register = async (req, res) => {
@@ -30,6 +30,7 @@ export const current = async (req, res) => {
     const userInfo = await UserService.getCurrent(req.user.user)
     res.send(userInfo)
 }
+
 export const reminder = async (req, res) =>{
     const { email } = req.body
     const result = await UserService.reminder(email)
@@ -60,7 +61,6 @@ export const recoverPassAction = async (req, res) =>{
 export const goPremium = async (req, res) =>{
     const uid = req.params.uid
     const result = await UserService.goPremium(uid)
-
+    
     res.send(result)
 }
-

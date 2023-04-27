@@ -2,7 +2,6 @@ import ProductDTO from '../dao/DTO/products.dto.js';
 import CustomError from '../services/errors/custom_errors.js';
 import { generateProductErrorInfo, generateCodeErrorInfo } from '../services/errors/info.js';
 import EnumErrors from '../services/errors/enums.js';
-
 class ProductRepository{
 
     constructor(dao){
@@ -58,7 +57,6 @@ class ProductRepository{
                 if (product) return product
                 else return {status:'error', error:"Product ID not found"}
         } catch (error) {
-                
                 return {status:'error', error: 'Incorrect Id'};
             }
         }    
@@ -89,7 +87,7 @@ class ProductRepository{
         
     }
 
-    #newProduct(title,description,price,code,stock, category, status, thumbnails, owner){
+    #newProduct(title,description,price,code,stock, category, status, thumbnails,owner){
         const newProduct={
             title,
             description,
@@ -98,7 +96,8 @@ class ProductRepository{
             code,
             stock,
             category,
-            status
+            status,
+            owner
         }
         return newProduct;
     }

@@ -1,7 +1,6 @@
 import UserDTO from "../dao/DTO/users.dto.js";
 import { generateToken, verifyUser } from "../jwt_utils.js";
 import Mail from "../modules/mails.js";
-
 class UserRepository{
 
     constructor(dao){
@@ -46,7 +45,7 @@ class UserRepository{
         let html = `<h1> Recupere su contraseña: </h1>
         <h2><a href="http://127.0.0.1:8080/session/recoverPass/${token}">Link de recuperación</a><h2>
         `
-
+        
         //send email
         const result = this.mail.send(user, "Recupere su contraseña", html)
         return {message: "Correo enviado"}
@@ -66,8 +65,7 @@ class UserRepository{
         }
         return user
     }
-
-
+    
 
 }
 

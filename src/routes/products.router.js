@@ -1,5 +1,4 @@
 import {Router} from 'express'
-
 import { getProducts, getProductById, addProduct, updateProductById, deleteProduct, mockingProducts } from '../controllers/products.controller.js';
 import { passportCall, authorization} from "../passport_custom.js";
 

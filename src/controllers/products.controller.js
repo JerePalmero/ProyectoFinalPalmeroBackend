@@ -2,6 +2,7 @@ import { generateProduct } from "../faker_utils.js";
 import CustomError from "../services/errors/custom_errors.js";
 import EnumErrors from "../services/errors/enums.js";
 import { generateProductErrorInfo } from "../services/errors/info.js";
+
 import { ProductService } from "../repositories/index.js";
 
 export const getProducts = async (req, res) => {
@@ -24,9 +25,9 @@ export const addProduct = async (req, res, next) => { // Se Agregó el try catch
     const addProduct = await ProductService.addProduct(title, description, price, code, stock, category, status, thumbnails, ownerID)
     req.io.emit('updatedProducts', await ProductService.getProducts());
     res.send(addProduct)
-}catch(err){
-    next(err);
-  }
+    }catch(err){
+      next(err);
+    }
 }
 
 export const updateProductById = async (req, res, next) => {// Se Agregó el try catch y el next, porque sino , no pasaba el custom error al errohandler y crasheaba la app 
@@ -40,7 +41,7 @@ export const updateProductById = async (req, res, next) => {// Se Agregó el try
     } catch (err) {
         next(err);
     }
-
+    
 }
 
 export const deleteProduct = async (req, res) => {
@@ -50,7 +51,6 @@ export const deleteProduct = async (req, res) => {
     req.io.emit('updatedProducts', await ProductService.getProducts());
     res.send(deleteProduct)
 }
-
 
 export const mockingProducts = async (req, res) => {
     const products=[]

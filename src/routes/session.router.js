@@ -1,9 +1,7 @@
 import {Router} from 'express'
 import passport from 'passport';
-
 import { current, empty, githubcallback, goPremium, login, logout, recoverPass, recoverPassAction, register, reminder } from '../controllers/session.controller.js';
 import { authorization, passportCall } from '../passport_custom.js';
-
 
 const router = Router()
 

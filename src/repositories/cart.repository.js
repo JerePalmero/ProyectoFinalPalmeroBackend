@@ -36,15 +36,15 @@ class CartRepository{
         return cartById || "Manager - Cart Id not found";
         
     }
-    
+
     addProductById = async (cartId,productId,quantity, ownerId) => {
         if(cartId.length < 24 || productId.length < 24){
-            CustomError.createError({
-                name: `ID must have 24 characters at least `,
-                cause: generateCartErrorInfo(cartId, productId),
-                message: 'Error trying to add product to cart',
-                code: EnumErrors.INVALID_TYPES_ERROR
-            })}
+        CustomError.createError({
+            name: `ID must have 24 characters at least `,
+            cause: generateCartErrorInfo(cartId, productId),
+            message: 'Error trying to add product to cart',
+            code: EnumErrors.INVALID_TYPES_ERROR
+        })}
         const cart = await this.getCartById(cartId) 
         const product = cart.products?.find(product => product.product._id == productId)
         const productContent = await ProductService.getProductById(productId) 

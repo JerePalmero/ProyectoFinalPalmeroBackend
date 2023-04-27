@@ -2,7 +2,7 @@ import {faker} from "@faker-js/faker";
 faker.locale= 'es';
 
 export const generateProduct = () => {
-
+   
     return{
         _id: faker.database.mongodbObjectId(),
         title: faker.commerce.productName(),
@@ -13,6 +13,6 @@ export const generateProduct = () => {
         stock: faker.random.numeric(2),
         category: faker.commerce.department(),
         status: faker.datatype.boolean()
-
+        
     }
 }

@@ -65,7 +65,7 @@ const initializePassport= () => {
     passport.use('login', new LocalStrategy({
         usernameField: 'email',
     }, async (username, password, done)=>{
-        
+      
             const user = await UserService.get(username);
             if(!user){
                 console.log('NO USER: No hay usuario registrado con ese email');
@@ -82,13 +82,13 @@ const initializePassport= () => {
 
             return done(null, user)
 
-        
+
     }));
 
     passport.use('github', new GitHubStrategy({
         clientID: 'Iv1.a921d6102a249409',
         clientSecret: '92c970321f572e81e1b4c19a40430aea1609d848',
-        callbackURL: 'http://192.168.1.10:8080/session/githubcallback',
+        callbackURL: 'http://127.0.0.1:8080/session/githubcallback',
         scope:['user:email']
     },async(accessToken, refreshToken, profile, done)=>{
         console.log(profile);

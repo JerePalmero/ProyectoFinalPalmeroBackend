@@ -1,6 +1,7 @@
 {
-  "name": "3-preentrega-backend",
-  "description": "3-preentrega-backend",
+  "name": "proyecto_valper",
+  "version": "1.0.0",
+  "description": "Desafio Coderhouse",
   "main": "app.js",
   "type": "module",
   "scripts": {
@@ -9,6 +10,7 @@
   },
   "author": "Jeremias Palmero",
   "license": "ISC",
+  
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
     "bcrypt": "^5.1.0",
@@ -29,6 +31,8 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "socket.io": "^4.5.4",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.2",
     "winston": "^3.8.2"
   }
 }
