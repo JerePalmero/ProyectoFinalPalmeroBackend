@@ -1,16 +1,13 @@
 {
   "name": "proyecto_valper",
   "version": "1.0.0",
-  "description": "Desafio Coderhouse",
+  "description": "Desafio Backend Coderhouse",
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha test/**/*.js",
     "start": "nodemon src/app.js"
   },
-  "author": "Jeremias Palmero",
-  "license": "ISC",
-  
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
     "bcrypt": "^5.1.0",
@@ -34,5 +31,10 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.2",
     "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
   }
 }
