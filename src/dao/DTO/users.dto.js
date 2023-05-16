@@ -7,6 +7,8 @@ export default class UserDTO{
         this.role = user.role
         this.password = user.password
         this.cart = user.cart
+        this.documents = user.documents
+        this.last_connection = user.last_connection
     }
 
     current = ()=>{
@@ -16,6 +18,7 @@ export default class UserDTO{
             age: this.age,
             email: this.email,
             role: this.role,
+            last_connection: this.last_connection
         }
     }
 }

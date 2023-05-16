@@ -16,7 +16,7 @@ class UserMongo{
         return await usersModel.create(newUser)        
     }
     update= async (id,updatedUser) => {
-        return await usersModel.updateOne({_id:id},updatedUser)
+        return await usersModel.updateOne({_id:id},{$set: updatedUser})
     }   
     delete = async (id) => {
         return await usersModel.deleteOne({_id:id})        

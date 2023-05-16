@@ -113,7 +113,7 @@ mongoose.connect(config.MONGO_URI,{dbName: config.MONGO_DB_NAME}, async (error)=
         app.use('/session', sessionRouter)
         app.use('/views', viewsRouter)
         
-        app.use(errorHandler)
+         /*   app.use(errorHandler) */
         
         app.get('/loggerTest', (req, res)=>{
             req.logger.fatal("FATAL")

@@ -23,11 +23,13 @@ export const githubcallback = async (req, res) => {
 }
 
 export const logout = async (req, res) => {
+    await UserService.update(req.user.user._id, {last_connection: new Date()})
     res.clearCookie("auth").redirect('/views/login')
 }
 
 export const current = async (req, res) => {
     const userInfo = await UserService.getCurrent(req.user.user)
+    delete userInfo.documents;
     res.send(userInfo)
 }
 
@@ -60,7 +62,30 @@ export const recoverPassAction = async (req, res) =>{
 
 export const goPremium = async (req, res) =>{
     const uid = req.params.uid
-    const result = await UserService.goPremium(uid)
-    
-    res.send(result)
+    const result = await UserService.Premium(uid)
+    if (result == 'Missing Documents'){
+        return res.send({error: "Faltan Documentos"})    
+    }
+    return res.send(result)
+}
+export const uploaddocuments = async (req, res) =>{
+    const uid = req.params.uid
+    console.log(req.files);
+    const user = await UserService.getbyId(req.user.user._id)
+    req.user.user.documents = user.documents
+    console.log(req.user.user);
+    if(!req.files){
+        return res.status(400).send({status:'error',error:'no file'})
+    }
+    if (!req.user.user?.documents) {
+        req.user.user.documents = []
+    } 
+    for (let index = 0; index < req.files.length; index++) {
+        req.user.user.documents.push({name: req.files[index].fieldname, reference:req.files[index].path})
+    }
+
+    console.log(req.user.user);
+
+    const result = await UserService.update(uid, req.user.user)
+    res.send({result, message:'file uploaded'})
 }

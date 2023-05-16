@@ -54,16 +54,26 @@ class UserRepository{
         const user = verifyUser(token)
         return user
     }
-    goPremium = async (uid) => {
+    Premium = async (uid) => {
         const user = await this.dao.getbyId(uid)
+        const identificacion = user.documents.find(documento => documento.name === "identificacion");
+        const comprobante = user.documents.find(documento => documento.name === "comprobanteDomicilio");
+        const estado = user.documents.find(documento => documento.name === "estadoDeCuenta");
+
         if (user.role == 'premium'){
             user.role = 'user'
-            await this.dao.update(user._id, user)
-        } else  if (user.role == 'user'){
-            user.role = 'premium'
-            await this.dao.update(user._id, user)
+            await this.dao.update(user._id, {role: user.role})
+
+        } else if (user.role == 'user'){
+            if (identificacion && comprobante && estado){
+                user.role = 'premium'
+                await this.dao.update(user._id, {role: user.role})
+            } else {
+                return 'Missing Documents'
+            }
         }
-        return user
+        console.log(user.role);
+        return user 
     }
     
 

@@ -52,7 +52,9 @@ const initializePassport= () => {
                 email: email,
                 password: createHash(password),
                 age: age,
-                cart: await fetch('http://127.0.0.1:8080/api/carts', {method:'POST'}).then(res=>res.json()).then(data=> data._id)
+                cart: await fetch('http://127.0.0.1:8080/api/carts', {method:'POST'}).then(res=>res.json()).then(data=> data._id),
+                documents: [],
+                last_connection: new Date()
 
             }
             const newUser = await UserService.create(userTemplate)
@@ -79,6 +81,8 @@ const initializePassport= () => {
 
             const token = generateToken(user)
             user.token = token
+            user.last_connection = new Date()
+            await UserService.update(user._id, {last_connection: user.last_connection})
 
             return done(null, user)
 
@@ -97,6 +101,9 @@ const initializePassport= () => {
             if (user) {
                 const token = generateToken(user)
                 user.token = token
+
+                user.last_connection = new Date()
+                await UserService.update(user._id, {last_connection: user.last_connection})
                 return done(null, user);
             }
 
@@ -106,7 +113,9 @@ const initializePassport= () => {
                 email: profile.emails[0].value,
                 password: '',
                 age:'',
-                cart: await fetch('http://127.0.0.1:8080/api/carts', {method:'POST'}).then(res=>res.json()).then(data=> data._id)
+                cart: await fetch('http://127.0.0.1:8080/api/carts', {method:'POST'}).then(res=>res.json()).then(data=> data._id),
+                documents: [],
+                last_connection: new Date()
             }
             const newUser = await UserService.create(userTemplate)
 
