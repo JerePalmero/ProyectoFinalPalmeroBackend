@@ -11,8 +11,6 @@
   },
   "author": "Jeremias Palmero",
   "license": "ISC",
- 
-  
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
     "bcrypt": "^5.1.0",
