@@ -4,7 +4,7 @@ import { faker } from "@faker-js/faker";
  
 
 const expect = chai.expect
-const requester = supertest('http://127.0.0.1:8080')
+const requester = supertest('https://cuartero-back-coder-final-production.up.railway.app')
 
 let cookie
 let userId
@@ -19,12 +19,12 @@ describe('Registro, Login and Current', ()=>{
         age: faker.random.numeric(2)
     }
     it('Debe registrar un usuario', async ()=>{
-        const {status} = await requester.post('/session/register').send(mockUser)
+        const {status} = await requester.post('/api/users/register').send(mockUser)
         expect(status).to.be.eql(302)
 
     })
     it('Debe loguear un usuario y devolver una cookie', async ()=>{
-        const result = await requester.post('/session/login').send({
+        const result = await requester.post('/api/users/login').send({
             email: mockUser.email,
             password: mockUser.password
         })
@@ -42,7 +42,7 @@ describe('Registro, Login and Current', ()=>{
 
     })
    it('Enviar cookie para ver el contenido del user', async() =>{
-        const {_body} = await requester.get('/session/current').set('Cookie', [`${cookie.name}=${cookie.value}`])
+        const {_body} = await requester.get('/api/users/current').set('Cookie', [`${cookie.name}=${cookie.value}`])
         expect(_body.email).to.be.eql(mockUser.email)
     })
 })

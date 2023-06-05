@@ -2,6 +2,7 @@ import ProductDTO from '../dao/DTO/products.dto.js';
 import CustomError from '../services/errors/custom_errors.js';
 import { generateProductErrorInfo, generateCodeErrorInfo } from '../services/errors/info.js';
 import EnumErrors from '../services/errors/enums.js';
+import { UserService } from './index.js';
 class ProductRepository{
 
     constructor(dao){
@@ -76,9 +77,16 @@ class ProductRepository{
     deleteProductById = async (id, userId) => {
         if (id.length == 24){
             const productToDelete = await this.dao.getOne(id)
+            const user = await UserService.getbyId(userId)
             if (!productToDelete) return {error: "Product Id not found"}
             console.log(userId);
             if ((productToDelete.owner != userId) && (userId != "admin")) return {error:"Product Owner not match"}
+            if (user.role == 'premium'){
+                const html = `<h2>Su producto se ha eliminado del listado</h2>
+                <h3>${productToDelete.title}</h3>
+                <img src="${productToDelete.thumbnails[0]}" width="300">`
+                const result = UserService.mail.send(user, "Su producto va a eliminarse", html)
+            }
             if (productToDelete) return (productToDelete, await this.dao.delete(id),{message: "Success"})
             else return {error:"No product to delete found"} 
           } else {

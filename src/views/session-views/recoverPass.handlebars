@@ -1,5 +1,7 @@
-<h1>Ingrese su nueva Contraseña</h1>
-<form action="/session/recoverPassAction/{{token}}" method="post">
-    Contraseña: <input type="text" name="password"> <br>
-    <input type="submit" value="Modificar">
+<p class="display-6">Ingrese su nueva Contraseña</p> 
+<form action="/api/users/recoverPassAction/{{token}}" method="post" class="form">
+    <div class="from-group">
+    Contraseña: <input type="text" name="password" class="form-control"> <br>
+    </div>
+    <input type="submit" value="Modificar" class="btn btn-primary">
 </form>

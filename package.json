@@ -1,13 +1,18 @@
 {
-  "name": "proyecto_valper",
+  "name": "trabajofinalcoder",
   "version": "1.0.0",
-  "description": "Desafio Backend Coderhouse",
+  "description": "Trabajo final Coder House",
   "main": "app.js",
   "type": "module",
   "scripts": {
     "test": "mocha test/**/*.js",
-    "start": "nodemon src/app.js"
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
   },
+  "author": "Jeremias Palmero",
+  "license": "ISC",
+ 
+  
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
     "bcrypt": "^5.1.0",

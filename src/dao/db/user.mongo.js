@@ -6,6 +6,9 @@ class UserMongo{
     get = async (username) => {
         return await usersModel.findOne({email: username}).lean().exec()
     } 
+    getAll = async () => {
+        return await usersModel.find().lean().exec()
+    } 
     getOne = async (parameter) => {
         return await usersModel.findOne(parameter).lean().exec()
     }
@@ -20,6 +23,9 @@ class UserMongo{
     }   
     delete = async (id) => {
         return await usersModel.deleteOne({_id:id})        
+    }
+    deleteMany = async (arrayOfId) => {
+        return await usersModel.deleteMany({_id:{$in: arrayOfId}})        
     }
 
 }

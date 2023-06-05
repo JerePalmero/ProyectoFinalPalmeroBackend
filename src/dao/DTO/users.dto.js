@@ -11,6 +11,14 @@ export default class UserDTO{
         this.last_connection = user.last_connection
     }
 
+    getAll = ()=>{
+        return {
+            first_name: this.first_name,
+            last_name: this.last_name,
+            email: this.email,
+            role: this.role,
+        }
+    }
     current = ()=>{
         return {
             first_name: this.first_name,

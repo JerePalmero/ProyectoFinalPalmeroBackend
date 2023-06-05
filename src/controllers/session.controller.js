@@ -2,6 +2,16 @@ import config from '../config/config.js';
 import { createHash, isValidPassword } from '../encrypt.js';
 import { UserService } from "../repositories/index.js";
 
+export const getUsers = async(req,res)=>{
+    const users = await UserService.getAll()
+    res.send({message:'Users', payload: users})
+}
+
+export const deleteInactive = async(req,res)=>{
+    const deletedUsers = await UserService.deleteInactive()
+    res.send({message:'Users deleted', payload: deletedUsers})
+}
+
 export const register = async (req, res) => {
     res.redirect('/views/login')
 }
@@ -68,6 +78,13 @@ export const goPremium = async (req, res) =>{
     }
     return res.send(result)
 }
+
+export const deleteUser = async(req,res)=>{
+    const uid = req.params.uid
+    const deletedUser = await UserService.delete(uid)
+    res.send({message:'User deleted', payload: deletedUser})
+}
+
 export const uploaddocuments = async (req, res) =>{
     const uid = req.params.uid
     console.log(req.files);
@@ -85,7 +102,7 @@ export const uploaddocuments = async (req, res) =>{
     }
 
     console.log(req.user.user);
-
+    
     const result = await UserService.update(uid, req.user.user)
     res.send({result, message:'file uploaded'})
 }

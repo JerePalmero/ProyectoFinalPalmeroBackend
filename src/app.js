@@ -1,29 +1,22 @@
 import express from 'express';
 import handlebars from 'express-handlebars';
 import { Server } from 'socket.io';
-
 import mongoose from 'mongoose';
 /* import session from 'express-session';
 import MongoStore from 'connect-mongo'; */
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import initializePassport from './config/passport.config.js'
-
 import __dirname from './utils.js';
-
 import productsRouter from './routes/products.router.js';
 import cartsRouter from './routes/carts.router.js';
 import chatRouter from './routes/chat.router.js';
 import sessionRouter from './routes/session.router.js';
 import viewsRouter from './routes/views.router.js';
-
 import { MessageService } from './repositories/index.js';
-
 import config from './config/config.js';
-
 import errorHandler from './middlewares/errors.js'
 import { addLogger } from './logger_utils.js';
-
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUiExpress from 'swagger-ui-express';
 
@@ -59,7 +52,7 @@ mongoose.set({strictQuery: true})
 mongoose.connect(config.MONGO_URI,{dbName: config.MONGO_DB_NAME}, async (error)=>{
     if (!error){
         console.log(`DB connected to ${config.MONGO_DB_NAME}`);
-        const httpServer = app.listen(config.PORT, ()=>{
+        const httpServer = app.listen(config.PORT,()=>{
             console.log(`Server listening on port ${config.PORT}...`);
         });
         
@@ -110,10 +103,10 @@ mongoose.connect(config.MONGO_URI,{dbName: config.MONGO_DB_NAME}, async (error)=
         app.use('/api/products', productsRouter)
         app.use('/api/carts', cartsRouter)
         app.use('/api/chat', chatRouter)
-        app.use('/session', sessionRouter)
+        app.use('/api/users', sessionRouter)
         app.use('/views', viewsRouter)
         
-         /*   app.use(errorHandler) */
+      /*   app.use(errorHandler) */
         
         app.get('/loggerTest', (req, res)=>{
             req.logger.fatal("FATAL")
