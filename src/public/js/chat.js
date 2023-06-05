@@ -1,7 +1,7 @@
 let socket = io()
 let user = ''
 let chatbox = document.getElementById('chatbox')
-let getUser = fetch('https://palmero-back-coder-final-production.up.railway.app/api/users/current'). //OBTENEMOS EL USER MEDIANTE UN FETCH AL CURRENT , QUE LEE LA COOKIE Y NOS DEVUELVE LA INFO DEL USER
+let getUser = fetch('https://proyectofinalpalmerobackend-production.up.railway.app/api/users/current'). //OBTENEMOS EL USER MEDIANTE UN FETCH AL CURRENT , QUE LEE LA COOKIE Y NOS DEVUELVE LA INFO DEL USER
                 then(data=>data.json()).
                 then(response=>{
                     user = response.email

@@ -52,7 +52,7 @@ const initializePassport= () => {
                 email: email,
                 password: createHash(password),
                 age: age,
-                cart: await fetch('https://palmero-back-coder-final-production.up.railway.app/api/carts', {method:'POST'}).then(res=>res.json()).then(data=> data._id),
+                cart: await fetch('https://proyectofinalpalmerobackend-production.up.railway.app/api/carts', {method:'POST'}).then(res=>res.json()).then(data=> data._id),
                 documents: [],
                 last_connection: new Date()
             }
@@ -90,7 +90,7 @@ const initializePassport= () => {
     passport.use('github', new GitHubStrategy({
         clientID: 'Iv1.a921d6102a249409',
         clientSecret: '92c970321f572e81e1b4c19a40430aea1609d848',
-        callbackURL: 'https://palmero-back-coder-final-production.up.railway.app/api/users/githubcallback',
+        callbackURL: 'https://proyectofinalpalmerobackend-production.up.railway.app/api/users/githubcallback',
         scope:['user:email']
     },async(accessToken, refreshToken, profile, done)=>{
         console.log(profile);
@@ -110,7 +110,7 @@ const initializePassport= () => {
                 email: profile.emails[0].value,
                 password: '',
                 age:'',
-                cart: await fetch('https://palmero-back-coder-final-production.up.railway.app/api/carts', {method:'POST'}).then(res=>res.json()).then(data=> data._id),
+                cart: await fetch('https://proyectofinalpalmerobackend-production.up.railway.app/api/carts', {method:'POST'}).then(res=>res.json()).then(data=> data._id),
                 documents: [],
                 last_connection: new Date()
             }

@@ -78,7 +78,7 @@ class UserRepository{
         }
         const token = generateToken(user)
         let html = `<h1> Recupere su contraseña: </h1>
-        <h2><a href="https://palmero-back-coder-final-production.up.railway.app/api/users/recoverPass/${token}">Link de recuperación</a><h2>
+        <h2><a href="https://proyectofinalpalmerobackend-production.up.railway.app/api/users/recoverPass/${token}">Link de recuperación</a><h2>
         `
         
         //send email
